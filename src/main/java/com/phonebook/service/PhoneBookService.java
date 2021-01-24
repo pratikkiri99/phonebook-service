@@ -20,5 +20,10 @@ public interface PhoneBookService {
      */
     ResponseEntity<String> saveContact(PhoneBook phoneBook);
 
+    /**
+     * new Contacts are compared with existing Contacts.
+     * @param newContacts
+     * @return
+     */
     Response getUniqueContacts(List<String> newContacts);
 }

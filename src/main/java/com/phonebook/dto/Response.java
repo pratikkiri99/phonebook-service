@@ -12,5 +12,6 @@ import java.util.Set;
 @Setter
 @Data
 public class Response {
+    String msg = "The friends that are unique to each address book are:";
     Map<String, Set<String>> uniqueContacts = new HashMap<>();
 }

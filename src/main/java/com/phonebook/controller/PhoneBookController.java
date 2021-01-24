@@ -26,7 +26,7 @@ public class PhoneBookController {
     }
 
     /**
-     * Return all contacts from phoneBook
+     * Return all contacts from phoneBook.
      * @return
      */
     @GetMapping("/contacts")
@@ -34,12 +34,22 @@ public class PhoneBookController {
         return phoneBookService.getAllContacts();
     }
 
+    /**
+     * Save contact.
+     * @param phoneBook
+     * @return
+     */
     @PostMapping("/contacts/add")
     public ResponseEntity<String> addContact(@RequestBody PhoneBook phoneBook) {
         log.info(phoneBook.toString());
         return phoneBookService.saveContact(phoneBook);
     }
 
+    /**
+     * new Contacts are compared with existing Contacts.
+     * @param newContacts
+     * @return
+     */
     @PostMapping("/contacts/unique")
     public Response getUniqueContacts(@RequestParam("newContacts") List<String> newContacts) {
         log.info("received contacts {} ",newContacts);

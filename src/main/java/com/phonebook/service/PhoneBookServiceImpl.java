@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,7 +29,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     /**
-     * Return all contacts from phoneBook
+     * Return all contacts from phoneBook.
      * @return
      */
     @Override
@@ -37,6 +38,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
         List<PhoneBook> contacts = phoneBookRepository.findAll();
         if (contacts !=null && contacts.size() != 0) {
             log.info("Contact list found of size ", contacts.size());
+            contacts.sort(Comparator.comparing(PhoneBook::getName));
             return contacts;
         } else {
             log.warn(NO_CONTACTS);
@@ -45,12 +47,13 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     /**
-     * Save Contact
+     * Save Contact.
      * @return
      */
     @Override
     public ResponseEntity<String> saveContact(PhoneBook phoneBook) {
         if(validatePhoneNumber(phoneBook.getPhoneNumber()) && validateName(phoneBook.getName())) {
+            log.info("valid name and phone");
             PhoneBook phoneBookResp = phoneBookRepository.save(phoneBook);
             String msg = phoneBookResp.getName() + " saved successfully";
             return new ResponseEntity<String>(msg,HttpStatus.CREATED);
@@ -58,6 +61,11 @@ public class PhoneBookServiceImpl implements PhoneBookService {
         return null;
     }
 
+    /**
+     * new Contacts are compared with existing Contacts.
+     * @param newContacts
+     * @return
+     */
     @Override
     public Response getUniqueContacts(List<String> newContacts) {
         List<PhoneBook> allContacts = getAllContacts();
